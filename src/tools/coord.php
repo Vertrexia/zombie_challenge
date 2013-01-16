@@ -6,7 +6,7 @@ class Coord
 {
     var $x;
     var $y;
-
+    
     function __construct($x, $y)
     {
         $this->x = $x;
@@ -18,8 +18,8 @@ class Coord
     {
         if ($coord)
         {
-            if (($this->x == $coord->x) && ($this->y == $coord->y))
-                return true;
+        if (($this->x == $coord->x) && ($this->y == $coord->y))
+            return true;
         }
         return false;
     }

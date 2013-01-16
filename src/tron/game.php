@@ -60,33 +60,24 @@ function roundBegan()
 	
 	$game->roundFinished = false;
 	
-	if (count($game->cycles) > 0)
-	{
-		unset($game->cycles);
-		$game->cycles = array();
-	}
+    //  set new spawn time for zones
+	$game->newSpawnTime = $game->timer->gameTimer() + $game->spawn_delay;
 	
 	loadRecords();	//	load records
 }
 
 function roundEnded()
 {
-	global $game;
-	
-	$game->timer->stop();
-	$game->roundFinished = true;
-	
-	saveRecords();	//	save records
-}
+    global $game;
 
-function respawnPlayer($name, $x, $y, $xdir, $ydir)
-{
-    echo "RESPAWN_PLAYER ".$name." ".$x." ".$y." ".$xdir." ".$ydir."\n";
-}
+    $game->timer->stop();
+    $game->roundFinished = true;
 
-function killPlayer($name)
-{
-    echo "KILL ".$name."\n";
+    clearCycles();
+    clearZones();
+    $game->map->clearSpawns();
+
+    saveRecords();	//	save records
 }
 
 function declareRoundWinner($name)
@@ -94,20 +85,21 @@ function declareRoundWinner($name)
     echo "DECLARE_ROUND_WINNER ".$name."\n";
 }
 
-//	function that  syncs with the server
+//	function that syncs with the server
 function gameSync()
 {
-	global $game;
+    global $game;
 	
-	//	do not sync if round has already finished
-	if ($game->roundFinished)
-		return;
+    //	do not sync if round has already finished
+    if ($game->roundFinished)
+        return;
 	
-	if ($game->timer->gameTimer() >= $game->newSpawnTime)
-	{
-		
-		//	set the next spawn time
-		$game->newSpawnTime += $game->spawn_delay;
-	}
+    if ($game->timer->gameTimer() >= $game->newSpawnTime)
+    {
+        
+        
+        //	set the next spawn time
+        $game->newSpawnTime += $game->spawn_delay;
+    }
 }
 ?>

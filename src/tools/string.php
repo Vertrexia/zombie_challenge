@@ -9,12 +9,12 @@ function startswith($str, $find)
     {
         return false;
     }
-
+    
     if (strlen($find) == 0)
     {
         return false;
     }
-
+    
     $isThis = substr($str, 0, strlen($find));
     if ($isThis == $find)
     {
@@ -67,5 +67,32 @@ function contains($str, $find)
     }
 
     return false;
+}
+
+//	extracts substring without spaces from that position
+function extractNonBlankString($str, &$pos)
+{
+    if ($pos > strlen($str))
+        return false;
+    
+    $toReturn = "";
+    
+    while (($pos < strlen($str)) && (is_null($str[$pos]) && ($str[$pos] == " ")))
+    {
+        $pos++;
+    }
+    
+    if ($pos > strlen($str))
+        return false;
+    
+    while (($pos < strlen($str)) && (!is_null($str[$pos]) && ($str[$pos] != " ")))
+    {
+        $toReturn .= $str[$pos++];
+    }
+    
+    if ($pos > strlen($str))
+        return false;
+    
+    return $toReturn;
 }
 ?>
