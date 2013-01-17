@@ -9,10 +9,11 @@ class Zone
     
     var $owner;         //  the owner of the zone (applies for shots, zombies, etc...)
     
-    var $type = 0;      //  the type of a zone it is. Details are below:
-                        //  0 - Default     (indates that this type of zone kills players)
-                        //  1 - Shot        (shooting after holdind and releasing brakes)
-                        //  2 - Death Shot  (shooting after dying)
+    var $type = -1;     //  the type of a zone it is. Details are below:
+                        //  -1 - Undecided...
+                        //  0  - Shot        (shooting after holdind and releasing brakes)
+                        //  1  - Death Shot  (shooting after dying)
+                        //  2  - Default     (indates that this type of zone kills players)
 
     function __construct($id, $name, $type, $owner = null)
     {
@@ -26,6 +27,12 @@ class Zone
         //  add new zone to list
         $game->zones[] = $this;
     }
+}
+
+//  spawning object zone on grid from the following given information
+function spawnObjectZone($pos)
+{
+    echo "SPAWN_OBJECT_ZONE ".$pos->x." ".$pos->y." 1 0.25 ".rand(-40, 40)." ".rand(-40, 40)." true 15 0 0 0\n";
 }
 
 //  all spawn data get erased

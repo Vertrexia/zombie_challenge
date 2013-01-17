@@ -18,8 +18,8 @@ function pm($player, $message)
 }
 
 //  custom player message - sends a custom message to that selected player (if they exist)
-//  $langauge_command is the langauge string command in language files to load
-function cpm($player, $langauge_command, $params = array())
+//  $language_command is the langauge string command in language files to load
+function cpm($player, $language_command, $params = array())
 {
     if (count($params) == 0)
         echo "CUSTOM_PLAYER_MESSAGE ".$player." ".$langauge_command."\n";
@@ -35,11 +35,11 @@ function cpm($player, $langauge_command, $params = array())
 }
 
 //  custom message - sends a custom message to all clients, public message to simplify
-//  $langauge_command is the langauge string command in language files to load
-function cm($langauge_command, $params = array())
+//  $language_command is the langauge string command in language files to load
+function cm($language_command, $params = array())
 {
     if (count($params) == 0)
-        echo "CUSTOM_MESSAGE ".$player." ".$langauge_command."\n";
+        echo "CUSTOM_MESSAGE ".$langauge_command."\n";
     else
     {
         $extras = "";
@@ -47,22 +47,22 @@ function cm($langauge_command, $params = array())
         {
             $extras .= $param." ";
         }
-        echo "CUSTOM_MESSAGE ".$player." ".$langauge_command." ".$extras."\n";
+        echo "CUSTOM_MESSAGE ".$langauge_command." ".$extras."\n";
     }
 }
 
 function roundBegan()
 {
 	global $game;
-	
+
 	$game->timer->reset();
 	$game->timer->start();
-	
+
 	$game->roundFinished = false;
 	
     //  set new spawn time for zones
 	$game->newSpawnTime = $game->timer->gameTimer() + $game->spawn_delay;
-	
+
 	loadRecords();	//	load records
 }
 
@@ -76,8 +76,12 @@ function roundEnded()
     clearCycles();
     clearZones();
     $game->map->clearSpawns();
+    $game->map->clearWalls();
 
     saveRecords();	//	save records
+    
+    //  collapse all zones on the grid (by default zones don't have names)
+    collapseZone("");
 }
 
 function declareRoundWinner($name)
@@ -93,10 +97,17 @@ function gameSync()
     //	do not sync if round has already finished
     if ($game->roundFinished)
         return;
-	
+
     if ($game->timer->gameTimer() >= $game->newSpawnTime)
     {
+        $zonePos = $zoneDir = null;
         
+        //  get the random position to spawn the zone on
+        $zonePos = $game->arena->getRandomPos();
+        if ($zonePos)
+        {           
+            spawnObjectZone($zonePos, $zoneDir);
+        }        
         
         //	set the next spawn time
         $game->newSpawnTime += $game->spawn_delay;

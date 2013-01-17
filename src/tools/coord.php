@@ -6,7 +6,7 @@ class Coord
 {
     var $x;
     var $y;
-    
+
     function __construct($x, $y)
     {
         $this->x = $x;
@@ -14,18 +14,18 @@ class Coord
     }
     
     //  cheking if the given coord points match with this object's points
-    function equals($coord)
+    function equals(Coord $coord)
     {
         if ($coord)
         {
-        if (($this->x == $coord->x) && ($this->y == $coord->y))
-            return true;
+            if (($this->x == $coord->x) && ($this->y == $coord->y))
+                return true;
         }
         return false;
     }
     
     //  subtract points by the given coord class object
-    function minus($coord)
+    function minus(Coord $coord)
     {
         if ($coord)
         {
@@ -37,7 +37,7 @@ class Coord
     }
     
     //  add points with the given coord object
-    function plus($coord)
+    function plus(Coord $coord)
     {
         if ($coord)
         {

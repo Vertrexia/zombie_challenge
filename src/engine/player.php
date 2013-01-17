@@ -6,12 +6,11 @@ class Player
 {
     var $log_name;
     var $screen_name;
-    var $color_name;
-    
+
     function __construct($name, $screen_name)
     {
     	global $game;
-    	
+
     	$this->log_name 	= $name;
     	$this->screen_name 	= $screen_name;
     	
@@ -24,7 +23,7 @@ class Player
 function playerExists($name)
 {
     global $game;
-    
+
     if (count($game->players) > 0)
     {
         foreach ($game->players as $p)
@@ -40,7 +39,7 @@ function playerExists($name)
 function getPlayer($name)
 {
     global $game;
-    
+
     if (count($game->players) > 0)
     {
         foreach ($game->players as $p)
@@ -56,12 +55,12 @@ function getPlayer($name)
 function playerEntered($line)
 {
     global $game;
-    
+
     $pieces = explode($line);
-    
+
     $log_name 		= $pieces[1];
     $screen_name	= substr($line, strlen($pieces[0]) + strlen($pieces[1]) + strlen($pieces[2]) + 3);
-    
+
     $player = new Player($log_name, $screen_name);
 }
 
@@ -69,13 +68,13 @@ function playerEntered($line)
 function playerRenamed($line)
 {
     global $game;
-    
+
     $pieces = explode($line);
-    
+
     $old_name = $pieces[1];
     $new_name = $pieces[2];
     $screen_name = substr($line, strlen($pieces[0]) + strlen($pieces[1]) + strlen($pieces[2]) + strlen($pieces[3]) + 3);
-    
+
     if (playerExists($old_name))
     {
         $player = getPlayer($old_name);
@@ -91,9 +90,9 @@ function playerRenamed($line)
 function playerLeft($line)
 {
     global $game;
-    
+
     $pieces = explode($line);
-    
+
     if (playerExists($old_name))
     {
         for($i = 0; $i < count($game->players); $i++)

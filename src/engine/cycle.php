@@ -17,7 +17,9 @@ class Cycle
     var $survivalTime;	//	how long has the cycle stayed alive for?
     var $currentPoint;	//	number of points acquired during the round
     
-    function __construct($name, $pos, $dir)
+    var $alive = false; //  is the player alive?
+    
+    function __construct($name, Coord $pos, Coord $dir)
     {
         global $game;
         
@@ -25,6 +27,27 @@ class Cycle
         
         if ($player)
         {
+            //  code that checks if that cycle already exists in list
+            if (count($game->cycles) > 0)
+            {
+                foreach ($game->cycles as $cycle)
+                {
+                    if ($cycle)
+                    {
+                        if ($cycle->player->log_name == $player->log_name)
+                        {
+                            if (!$cycle->alive)
+                            {
+                                //  remove them from the grid
+                                killPlayer($player->screen_name);
+                                
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            
             $this->player = $player;
             
             $this->spawnPos = $this->pos = $pos;
@@ -32,8 +55,40 @@ class Cycle
             
             $this->spawnTime = $game->timer->gameTimer();
             
+            $this->alive = true;
+            
             //  add new cycle to list
             $game->cycles[] = $this;
+        }
+    }
+}
+
+//  function called when a cycle is destroyed
+function cycleDestroyed($name)
+{
+    global $game;
+    
+    if (count($game->cycles) > 0)
+    {
+        foreach ($game->cycles as $cycle)
+        {
+            if ($cycle)
+            {
+                if ($cycle->player->log_name == $name)
+                {
+                    if ($cycle->alive)
+                    {
+                        //  give the cycle its survival time
+                        $cycle->survivalTime = $game->timer->gameTimer();
+                        
+                        $cycle->alive = false;
+                        
+                        //  announce
+                        cm("zombie_challenge_survival_time", array($cycle->player->screen_name, $cycle->survivalTime));
+                    }
+                    break;
+                }
+            }
         }
     }
 }

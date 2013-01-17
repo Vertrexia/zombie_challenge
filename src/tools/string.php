@@ -74,9 +74,9 @@ function extractNonBlankString($str, &$pos)
 {
     if ($pos > strlen($str))
         return false;
-    
+
     $toReturn = "";
-    
+
     while (($pos < strlen($str)) && (is_null($str[$pos]) && ($str[$pos] == " ")))
     {
         $pos++;
@@ -84,7 +84,7 @@ function extractNonBlankString($str, &$pos)
     
     if ($pos > strlen($str))
         return false;
-    
+
     while (($pos < strlen($str)) && (!is_null($str[$pos]) && ($str[$pos] != " ")))
     {
         $toReturn .= $str[$pos++];
@@ -92,7 +92,7 @@ function extractNonBlankString($str, &$pos)
     
     if ($pos > strlen($str))
         return false;
-    
+
     return $toReturn;
 }
 ?>

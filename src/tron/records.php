@@ -23,7 +23,7 @@ class Record
 function recordExists($name)
 {
     global $game;
-    
+
     if (count($game->records) > 0)
     {
         foreach ($game->records as $record)
@@ -38,7 +38,7 @@ function recordExists($name)
 function getRecord($name)
 {
     global $game;
-    
+
     if (count($game->records) > 0)
     {
         foreach ($game->records as $record)
@@ -53,7 +53,7 @@ function getRecord($name)
 function loadRecords()
 {
     global $game;
-    
+
     if (count($game->records) > 0)
     {
         unset($game->records);
@@ -65,7 +65,7 @@ function loadRecords()
     {
         $fcontents = file_get_contents($fpath);
         $fcontents = explode("\n", $fcontents);
-        
+
         foreach ($fcontents as $fdata)
         {
             $rData = explode(" ", $fdata);
@@ -77,7 +77,7 @@ function loadRecords()
 function saveRecords()
 {
     global $game;
-    
+
     if (count($game->records) > 0)
     {
     	$fpath = __ROOT__.$game->recordsFile;

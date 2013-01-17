@@ -16,7 +16,10 @@ class Map
         $this->clearSpawns();
         $this->clearWalls();
         
-        $map_path = $game->resourceDir.$map_file;
+        $map_path = addslashes($game->resourceDir."/".$map_file);
+        
+        //  set this variable up to store x and y values and then find the min and max
+        $xList = $yList = array();  
         
         //  ensure that map file exists
         if (file_exists($map_path))
@@ -25,7 +28,7 @@ class Map
             $map->load($map_path);
             
             //  let's read the data for the walls
-            $walls = $dom->getElementsByTagName('Wall');
+            $walls = $map->getElementsByTagName('Wall');
             if (!is_null($walls))
             {
                 //  let's load individual wall data
@@ -49,13 +52,22 @@ class Map
                             
                             //  store points in array of wall
                             $newWall->pushCoord($newCoord);
+                            
+                            $xList[] = $x;
+                            $yList[] = $y;
                         }
                     }
                 }
             }
 
+            if ((count($xList) > 0) && (count($yList) > 0))
+            {
+                $game->arena->maxCoord = new Coord(max($xList), max($yList));   //  set the max coodinates
+                $game->arena->minCoord = new Coord(min($xList), min($yList));   //  set the min coodinates
+            }
+
             //  let's read the data on the spawns
-            $spawns = $dom->getElementsByTagName('Spawn');
+            $spawns = $map->getElementsByTagName('Spawn');
             if (!is_null($spawns))
             {
                 foreach($spawns as $spawn)
@@ -73,7 +85,7 @@ class Map
             }
         }
     }
-    
+
     //  all spawn data get erased
     function clearSpawns()
     {
