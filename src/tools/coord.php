@@ -7,7 +7,7 @@ class Coord
     var $x;
     var $y;
 
-    function __construct($x, $y)
+    function Coord($x, $y)
     {
         $this->x = $x;
         $this->y = $y;

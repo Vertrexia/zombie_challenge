@@ -7,7 +7,7 @@ class Player
     var $log_name;
     var $screen_name;
 
-    function __construct($name, $screen_name)
+    function Player($name, $screen_name)
     {
     	global $game;
 

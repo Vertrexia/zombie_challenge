@@ -14,12 +14,12 @@ class Cycle
     var $pos;		//	current position of the cycle
     var $dir;		//	current tavelling direction of the cycle
     
-    var $survivalTime;	//	how long has the cycle stayed alive for?
-    var $currentPoint;	//	number of points acquired during the round
+    var $survivalTime = -1;	    //	how long has the cycle stayed alive for?
+    var $currentPoint = 0;	    //	number of points acquired during the round
     
     var $alive = false; //  is the player alive?
     
-    function __construct($name, Coord $pos, Coord $dir)
+    function Cycle($name, Coord $pos, Coord $dir)
     {
         global $game;
         
@@ -60,6 +60,11 @@ class Cycle
             //  add new cycle to list
             $game->cycles[] = $this;
         }
+    }
+
+    static function compare(Cycle $a, Cycle $b)
+    {
+        return ($a->survivalTime < $b->survivalTime);
     }
 }
 

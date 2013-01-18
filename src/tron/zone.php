@@ -15,7 +15,7 @@ class Zone
                         //  1  - Death Shot  (shooting after dying)
                         //  2  - Default     (indates that this type of zone kills players)
 
-    function __construct($id, $name, $type, $owner = null)
+    function Zone($id, $name, $type, $owner = null)
     {
         global $game;
 
@@ -35,10 +35,38 @@ function spawnObjectZone($pos)
     echo "SPAWN_OBJECT_ZONE ".$pos->x." ".$pos->y." 1 0.25 ".rand(-40, 40)." ".rand(-40, 40)." true 15 0 0 0\n";
 }
 
+//  function is called when a cycle enters a zone
+function cycleZoneInteract($name, $id)
+{
+    global $game;
+    
+    if (count($game->cycles) > 0)
+    {
+        foreach ($game->cycles as $cycle)
+        {
+            if ($cycle)
+            {
+                //  checking if this cycle is owned by the player
+                if ($cycle->player->log_name == $name)
+                {
+                    //  kill the player
+                    killPlayer($cycle->player->screen_name);
+                    
+                    //  announce
+                    cm("zombie_challenge_killed", array($cycle->player->screen_name));
+                }
+            }
+        }
+    }
+}
+
 //  all spawn data get erased
 function clearZones()
 {
     global $game;
+    
+    //  collapse all zones on the grid (by default zones don't have names)
+    collapseZone("");
     
     if (count($game->zones) > 0)
     {

@@ -43,12 +43,16 @@ while(1)
     elseif (startswith($line, "CYCLE_CREATED"))
     {
         $pieces = explode(" ", $line);
-
-        $cycle = new Cycle($pieces[1], Coord($pieces[2], $pieces[3]), Coord($pieces[4], $pieces[5]));
+        
+        $player = getPlayer($pieces[1]);
+        if ($player)
+            $cycle = new Cycle($pieces[1], Coord($pieces[2], $pieces[3]), Coord($pieces[4], $pieces[5]));
     }
     elseif (startswith($line, "CYCLE_DESTROYED"))
     {
         $pieces = explode(" ", $line);
+        
+        cycleDestroyed($pieces[1]);
     }
     elseif (startswith($line, "ZONE_SHOT_RELEASED"))
     {
@@ -68,6 +72,23 @@ while(1)
         
         //  get rid of these zones, they are not allowed!
         destroyZoneId($pieces[1]);
+    }
+    elseif (startswith($line, "OBJECT_PLAYER_ENTER"))
+    {
+        $pieces = explode(" ", $line);
+        
+        //  call the cycle interaction function
+        cycleZoneInteract($pieces[5], $pieces[1]);
+    }
+    elseif (startswith($line, "OBJECT_ZONE_ENTER"))
+    {
+        $pieces = explode(" ", $line);
+        
+        
+    }
+    elseif (startswith($line, "SHUTDOWN"))
+    {
+        exit();
     }
 
     //	sync server and client events

@@ -6,7 +6,7 @@ class Wall
 {
     var $positions = array();   //  holds the list of points
     
-    function __construct()
+    function Wall()
     {
         global $game;
         

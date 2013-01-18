@@ -63,7 +63,9 @@ function roundBegan()
     //  set new spawn time for zones
 	$game->newSpawnTime = $game->timer->gameTimer() + $game->spawn_delay;
 
-	loadRecords();	//	load records
+	loadRecords();	   //  load records
+	
+	showLadder();      //  show ranks
 }
 
 function roundEnded()
@@ -72,6 +74,11 @@ function roundEnded()
 
     $game->timer->stop();
     $game->roundFinished = true;
+    
+    //  adjusting records is no. 1 priority
+    adjustRecords();
+    
+    showLadder();
 
     clearCycles();
     clearZones();
@@ -79,9 +86,6 @@ function roundEnded()
     $game->map->clearWalls();
 
     saveRecords();	//	save records
-    
-    //  collapse all zones on the grid (by default zones don't have names)
-    collapseZone("");
 }
 
 function declareRoundWinner($name)

@@ -6,7 +6,7 @@ class Spawn
 {
     var $pos;
     
-    function __construct()
+    function Spawn()
     {
         global $game;
 
